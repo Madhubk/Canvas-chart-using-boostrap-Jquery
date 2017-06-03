@@ -1,0 +1,67 @@
+
+
+Add the chart plugin and then write the below Code:
+
+
+
+  <div class="container">
+                    <div class="row">
+                        <div style="padding-left:30px;width:95%;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3>Booking Graph Line</h3>
+                                </div>
+                                <div id="chart2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ 
+ 
+ $(document).ready(function () {
+            $('#example').DataTable();
+            var model = @Html.Raw(Json.Encode(Model._BKWeekCountModel))
+            var datedt=[];
+            for(var i=0;i<model.length;i++)
+            {
+                var obj={};
+                obj.x= new Date(model[i].BookingDate.split('-')[0],model[i].BookingDate.split('-')[1],model[i].BookingDate.split('-')[2]);
+                obj.y=parseInt(model[i].BookingCount);
+                datedt.push(obj);
+            }
+            var chart = new CanvasJS.Chart("chart2",{
+                theme: "theme2",
+                title: {
+                    text: "Last 7 Days Booking Details"
+                },
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "DD/MMM",
+                    //interval: 1,
+                    intervalType: "day",
+                    title: "Day "
+
+                },
+                axisY: {
+                    title: "No of Booking",
+                    includeZero: false
+
+                },
+                data: [
+                {
+                    type: "line",
+                    //lineThickness: 3,
+
+                    dataPoints: datedt
+
+
+                }
+
+
+                ]
+            });
+
+            chart.render();
+
+        });
